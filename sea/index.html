@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a111a">
+  <meta name="description" content="《诗季》· 凌润林诗集。在每一个悲伤的时刻，都是诗的季节。站在安静的海边，拾起一只装着诗的玻璃漂流瓶。">
+  <title>诗季 · 凌润林</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main class="scene" id="scene" aria-label="一片会随昼夜更替的安静海滩">
+    <div class="fallback-scene" id="fallback-scene" aria-hidden="true"></div>
+    <canvas class="sea-canvas" id="sea-canvas" aria-hidden="true"></canvas>
+    <div class="gull-layer" id="gull-layer" aria-hidden="true"></div>
+    <div class="bottle-layer" id="bottle-layer" aria-label="海面上的漂流瓶"></div>
+    <canvas class="fx-canvas" id="fx-canvas" aria-hidden="true"></canvas>
+    <div class="scene__vignette" aria-hidden="true"></div>
+    <div class="scene__grain" aria-hidden="true"></div>
+    <div class="scene__letterbox" aria-hidden="true"></div>
+  </main>
+
+  <div class="chrome" id="chrome">
+    <header class="masthead">
+      <a class="back-home" href="../index.html">← 星辰大海</a>
+      <p class="masthead__kicker">
+        <span>凌润林</span><i class="tiny-rule"></i><span>诗选 · 四十三首</span>
+      </p>
+      <h1 class="masthead__title" aria-label="《诗季》">
+        <span class="title-bracket" aria-hidden="true">《</span><span class="title-word">诗</span><span class="title-word title-word--warm">季</span><span class="title-bracket" aria-hidden="true">》</span>
+      </h1>
+      <p class="masthead__volumes" aria-hidden="true">夏<i></i>风<i></i>河<i></i>月<i></i>瓷</p>
+      <p class="masthead__quote">“在每一个悲伤的时刻，<br class="quote-break">都是诗的季节。<span class="masthead__author">——凌润林</span>”</p>
+    </header>
+
+    <aside class="phase" id="phase" aria-hidden="true">
+      <span class="phase__label">此刻</span>
+      <span class="phase__value" id="phase-value">向晚</span>
+      <span class="phase__meter"><i id="phase-dot"></i></span>
+    </aside>
+
+    <p class="sea-hint" id="sea-hint"><span class="sea-hint__mark"></span><span id="sea-hint-text">轻触「打捞漂流瓶」，从海里取一只漂流瓶</span></p>
+
+    <nav class="dock" id="dock" aria-label="阅读与氛围控制">
+      <button class="dock__btn dock__btn--salvage" id="btn-salvage" type="button" aria-label="打捞漂流瓶" title="打捞漂流瓶">
+        <svg class="dock__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9.2 3.2h5.6v2.9l1.25 2.05A5.3 5.3 0 0 1 17.3 10.8V18a3.2 3.2 0 0 1-3.2 3.2h-4.2A3.2 3.2 0 0 1 6.7 18v-7.2c0-.9.23-1.78.67-2.55L8.6 6.1V3.2Z" fill="none" stroke="currentColor" stroke-width="1.05" stroke-linejoin="round"/>
+          <path d="M8.6 6.1h6.8M7.1 15.1c1.75.7 3.3.7 4.9 0 1.6-.7 3.15-.7 4.9 0" fill="none" stroke="currentColor" stroke-width=".85" stroke-linecap="round" opacity=".7"/>
+          <path d="M10.4 10.8c1.4 1.1 2.9 1.1 4.3 0" fill="none" stroke="currentColor" stroke-width=".7" stroke-linecap="round" opacity=".38"/>
+        </svg>
+        <span>打捞漂流瓶</span>
+      </button>
+      <span class="dock__sep" aria-hidden="true"></span>
+      <button class="dock__btn" id="btn-toc" type="button" aria-label="打开诗集目录" title="目录">
+        <svg class="dock__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 7.5h14M5 12h9M5 16.5h12" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          <circle cx="18.2" cy="12" r="1.05" fill="currentColor" opacity=".55"/>
+          <circle cx="19.2" cy="16.5" r="1.05" fill="currentColor" opacity=".35"/>
+        </svg>
+        <span>目录</span>
+      </button>
+      <span class="dock__sep" aria-hidden="true"></span>
+      <button class="dock__btn" id="btn-particles" type="button" aria-label="关闭粒子特效" title="关闭粒子特效" aria-pressed="true">
+        <svg class="dock__icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="9" cy="9" r="1.15" fill="currentColor" opacity=".8"/>
+          <circle cx="15.3" cy="7.6" r=".85" fill="currentColor" opacity=".55"/>
+          <circle cx="14.2" cy="14.2" r="1.35" fill="currentColor" opacity=".65"/>
+          <circle cx="8.1" cy="15.3" r=".7" fill="currentColor" opacity=".38"/>
+          <path d="M17.7 16.7v3.4M16 18.4h3.4" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round" opacity=".6"/>
+        </svg>
+        <span>粒子</span>
+      </button>
+      <button class="dock__btn dock__btn--sound" id="btn-sound" type="button" aria-label="开启轻柔海浪环境音" title="开启轻柔海浪环境音" aria-pressed="false">
+        <span class="sound-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span>听海</span>
+      </button>
+    </nav>
+  </div>
+
+  <section class="reader overlay" id="reader" role="dialog" aria-modal="true" aria-labelledby="reader-title" aria-hidden="true">
+    <div class="overlay__backdrop" data-reader-close></div>
+    <div class="reader__panel">
+      <header class="reader__head">
+        <span class="reader__volume" id="reader-volume">卷一 · 夏</span>
+        <button class="round-btn" id="reader-close" type="button" aria-label="合上诗页" title="合上诗页（Esc）">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </button>
+      </header>
+
+      <div class="reader__scroll" id="reader-scroll" tabindex="0" role="region" aria-label="诗页正文，可使用 PageDown 或上下方向键向下滚动">
+        <div class="reader__eyebrow">
+          <span id="reader-index">01</span>
+          <i></i>
+          <span>诗季 · 凌润林</span>
+        </div>
+        <h2 class="reader__title" id="reader-title">夏日舞曲</h2>
+        <p class="reader__sub" id="reader-sub">夏日、海，与没能说出口的欢喜</p>
+        <div class="poem" id="poem-body"></div>
+        <p class="poem-sign" id="poem-sign" hidden></p>
+        <div class="poem-final" aria-hidden="true">
+          <span></span><em>诗 季</em><span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="toc overlay" id="toc" role="dialog" aria-modal="true" aria-labelledby="toc-title" aria-hidden="true">
+    <div class="overlay__backdrop" data-toc-close></div>
+    <div class="toc__panel">
+      <header class="toc__head">
+        <div>
+          <p class="toc__kicker">诗季 · 凌润林</p>
+          <h2 id="toc-title">目 录</h2>
+        </div>
+        <button class="round-btn" id="toc-close" type="button" aria-label="合上目录" title="合上目录（Esc）">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </button>
+      </header>
+      <p class="toc__note">夏 · 风 · 河 · 月 · 瓷<span>四十三首</span></p>
+      <div class="toc__scroll" id="toc-scroll" tabindex="0" role="region" aria-label="诗集目录，可使用 PageDown 或方向键滚动"></div>
+      <footer class="toc__foot">
+        <span class="toc__foot-rule"></span>
+        每一只漂流瓶，都装着一首完整的诗
+      </footer>
+    </div>
+  </section>
+
+  <p class="sr-only" id="live" aria-live="polite"></p>
+
+  <noscript>
+    <div class="noscript">请开启 JavaScript，海面与诗集才会浮现。</div>
+  </noscript>
+
+  <script src="poems.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#05070c" />
+<meta name="description" content="《诗季》——在每一个悲伤的时刻，都是诗的季节。凌润林 诗选四十三首。" />
+<title>诗季 · 在每一个悲伤的时刻，都是诗的季节</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23060a12'/%3E%3Cpath d='M16 6l2.2 7.8L26 16l-7.8 2.2L16 26l-2.2-7.8L6 16l7.8-2.2z' fill='%23dfe8f6'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="assets/css/site.css" />
+</head>
+<body>
+
+<div id="stage" aria-hidden="true"></div>
+<div id="veil"></div>
+
+<!-- 角标：书名 / 标语 / 作者 -->
+<header class="nameplate" id="nameplate">
+  <div class="nameplate__inner">
+    <h1><span class="br">《</span>诗季<span class="br">》</span></h1>
+    <p class="motto">在每一个悲伤的时刻，<br />都是诗的季节。</p>
+    <p class="author">——凌润林</p>
+  </div>
+</header>
+
+<!-- 玻璃拟态控件 -->
+<nav class="controls" id="controls" aria-label="场景控件">
+  <a class="ctl ctl--back" href="../index.html" aria-label="回到诗季">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5L8 12l6.5 6.5" /></svg>
+  </a>
+  <button class="ctl" data-act="catalog" data-label="目录" aria-label="打开目录" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5h10M4 12h16M4 17.5h12" /></svg>
+  </button>
+  <button class="ctl" data-act="spin" data-label="星汉流转" aria-label="开关星空旋转" aria-pressed="true">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="2.1" />
+      <path d="M12 4.2v2.2M12 17.6v2.2M4.2 12h2.2M17.6 12h2.2M6.7 6.7l1.5 1.5M15.8 15.8l1.5 1.5M17.3 6.7l-1.5 1.5M8.2 15.8l-1.5 1.5" />
+    </svg>
+  </button>
+  <button class="ctl is-off" data-act="sound" data-label="夜声" aria-label="开关蟋蟀与风声" aria-pressed="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 9.5h3.2L12.5 6v12L8.2 14.5H5z" />
+      <path class="wave" d="M16 9.2c1.1 1 1.1 4.6 0 5.6M18.4 7c2.1 2 2.1 8 0 10" />
+    </svg>
+  </button>
+</nav>
+
+<div class="hint" id="hint">移动鼠标环顾 · 触碰诗星 · 点击阅读</div>
+<div class="star-tag" id="starTag" aria-hidden="true"></div>
+
+<!-- 诗页 -->
+<section class="sheet poem-sheet" id="poemSheet" role="dialog" aria-modal="false" aria-label="诗歌">
+  <div class="sheet__glow"></div>
+  <button class="sheet__close" data-close="poem" aria-label="合上">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" /></svg>
+  </button>
+  <div class="poem-sheet__head">
+    <span class="poem-vol" id="poemVol">卷一 · 夏</span>
+    <span class="poem-count" id="poemCount">01 / 43</span>
+  </div>
+  <h2 class="poem-title" id="poemTitle">夏日舞曲</h2>
+  <div class="poem-rule"></div>
+  <div class="poem-scroll" id="poemScroll">
+    <div class="poem-body" id="poemBody"></div>
+    <div class="poem-sign" id="poemSign"></div>
+  </div>
+  <div class="poem-nav">
+    <button data-nav="-1" aria-label="上一首"><span>‹</span> 上一首</button>
+    <button data-nav="1" aria-label="下一首">下一首 <span>›</span></button>
+  </div>
+</section>
+
+<!-- 目录 -->
+<section class="sheet catalog-sheet" id="catalogSheet" role="dialog" aria-modal="false" aria-label="目录">
+  <div class="sheet__glow"></div>
+  <button class="sheet__close" data-close="catalog" aria-label="合上目录">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" /></svg>
+  </button>
+  <div class="catalog__head">
+    <span class="catalog__kicker">诗集 · 四十三首</span>
+    <h2>目录</h2>
+    <p>五卷 · 夏 风 河 月 瓷</p>
+  </div>
+  <div class="catalog__scroll" id="catalogList"></div>
+</section>
+
+<noscript><div class="noscript">请开启 JavaScript，方能看到这篇星空。</div></noscript>
+
+<script src="assets/js/three.min.js"></script>
+<script src="assets/js/poems.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/sky.js"></script>
+<script src="assets/js/meadow.js"></script>
+<script src="assets/js/postfx.js"></script>
+<script src="assets/js/audio.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

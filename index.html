@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#05050A">
+<title>诗季 —— 我们的星辰与大海</title>
+<meta name="description" content="凌润林诗集《诗季》。在诗的季节里，这里，是我们的星辰与大海。投稿邮箱 an1327_2021@qq.com">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2306060C'/%3E%3Cpath d='M16 5.6l1.9 8.5 8.5 1.9-8.5 1.9L16 26.4l-1.9-8.5L5.6 16l8.5-1.9z' fill='%23F7DDE9'/%3E%3C/svg%3E">
+<style>
+/* ============ 字体：正文的中文衬线（本地子集，离线也不掉字） ============ */
+@font-face{
+  font-family:"PoemSerif";
+  src:url("assets/fonts/noto-serif-sc-300.woff2") format("woff2");
+  font-weight:300;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"PoemSerif";
+  src:url("assets/fonts/noto-serif-sc-400.woff2") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
+
+:root{
+  --paper:#F7EEF3;
+  --dim:rgba(247,238,243,.46);
+  --faint:rgba(247,238,243,.34);
+  --serif:"PoemSerif","Noto Serif SC","Songti SC","STSong","Source Han Serif SC","SimSun",serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  background:#05050A;color:var(--paper);
+  font-family:var(--serif);font-weight:300;
+  overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+}
+
+/* ============ 底：草原与海 ============ */
+#bg{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;
+    opacity:0;animation:fadeIn 2.8s .1s var(--ease) forwards}
+.veil{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(112% 78% at 50% 38%, rgba(4,4,9,.34) 0%, rgba(4,4,9,.10) 48%, rgba(4,4,9,0) 74%),
+    radial-gradient(160% 70% at 50% 108%, rgba(3,3,7,.46) 0%, rgba(3,3,7,.12) 46%, rgba(3,3,7,0) 76%),
+    radial-gradient(120% 66% at 50% -10%, rgba(3,3,7,.62) 0%, rgba(3,3,7,.12) 54%, rgba(3,3,7,0) 80%);
+}
+.grain{
+  position:fixed;inset:-25%;z-index:2;pointer-events:none;
+  opacity:0;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='.38'/></svg>");
+  background-size:200px 200px;
+  animation:grainIn 3.4s .6s var(--ease) forwards,grainMove 9s steps(7) infinite;
+}
+
+/* ============ 手写墨迹：粉白渐变 + 极淡的内发光与外晕 ============ */
+.ink{position:relative;display:block;width:var(--w,100%);aspect-ratio:var(--ar);flex:none}
+.ink i{
+  position:absolute;inset:0;display:block;
+  -webkit-mask-image:var(--ink);mask-image:var(--ink);
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:center;mask-position:center;
+}
+/* 外晕：同一份笔迹模糊开，就是那圈光 */
+.ink .bloom{
+  background:linear-gradient(176deg,#FFFDFE 0%,#FFF1F7 34%,#FBDCE9 70%,#F1C3D9 100%);
+  filter:blur(15px);
+  opacity:.40;
+}
+/* 本体：粉白渐变，笔锋的浓淡还是原手写的那份 */
+.ink .body{
+  background:linear-gradient(176deg,#FFFDFE 0%,#FFF4F9 30%,#FCDEEB 66%,#F2C6DB 100%);
+  filter:drop-shadow(0 0 9px rgba(255,186,214,.18));
+  transition:filter 1.4s var(--ease);
+}
+/* 内发光：极轻，只是笔画里透一点光 */
+.ink .light{
+  background:linear-gradient(180deg,rgba(255,255,255,.60),rgba(255,255,255,.09) 46%,rgba(255,255,255,0) 78%);
+  mix-blend-mode:screen;
+  filter:blur(2px);
+  opacity:.32;
+}
+
+/* ============ 版式 ============ */
+.stage{
+  position:fixed;inset:0;z-index:3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:clamp(46px,7.6vh,80px) clamp(20px,5vw,48px) clamp(112px,19.5vh,186px);
+}
+
+.head{position:relative;display:flex;flex-direction:column;align-items:center;width:100%;
+      opacity:0;animation:riseIn 2.4s .35s var(--ease) forwards}
+/* 标题背后一口缓慢呼吸的淡光 */
+.head::before{
+  content:"";position:absolute;left:50%;top:clamp(-60px,-6vh,-20px);
+  width:min(1200px,118%);height:clamp(280px,50vh,450px);
+  transform:translate(-50%,0);
+  background:radial-gradient(ellipse 48% 50% at 50% 44%,rgba(255,196,222,.155),rgba(226,178,206,.065) 44%,rgba(226,178,206,0) 72%);
+  filter:blur(24px);pointer-events:none;z-index:-1;
+  animation:breathe 13s ease-in-out infinite alternate;
+}
+
+.kicker{
+  font-size:clamp(9px,.86vw,10.5px);font-weight:300;
+  letter-spacing:.5em;text-indent:.5em;
+  color:rgba(247,238,243,.52);
+  margin-bottom:clamp(20px,3.6vh,34px);
+}
+
+.title{width:min(1010px,91vw);margin:0;line-height:0}
+.ink--title{--ink:url("assets/ink/title-full.png");--ar:1380/241}
+
+.sub{
+  margin-top:clamp(16px,2.9vh,26px);
+  font-size:clamp(12px,1.32vw,14.5px);font-weight:300;
+  letter-spacing:.2em;text-indent:.2em;line-height:2.1;
+  color:rgba(247,238,243,.62);
+  text-shadow:0 0 22px rgba(255,190,220,.14);
+}
+
+/* ============ 磨砂玻璃的两个入口 ============ */
+.gates{
+  display:flex;gap:clamp(16px,2.2vw,28px);
+  margin-top:clamp(32px,6vh,64px);
+  opacity:0;animation:riseIn 2.2s 1.05s var(--ease) forwards;
+}
+.gate{
+  position:relative;isolation:isolate;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:clamp(190px,21vw,256px);height:clamp(158px,23vh,204px);
+  border-radius:24px;text-decoration:none;color:inherit;
+  border:1px solid rgba(255,255,255,.085);
+  background:linear-gradient(163deg,rgba(255,255,255,.062),rgba(255,255,255,.018) 46%,rgba(255,255,255,.048));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.11),
+    inset 0 -26px 40px -30px rgba(255,192,216,.18),
+    0 26px 64px -36px rgba(0,0,0,.96);
+  -webkit-backdrop-filter:blur(18px) saturate(118%);
+  backdrop-filter:blur(18px) saturate(118%);
+  transition:background 1.3s var(--ease),border-color 1.3s var(--ease),
+             box-shadow 1.5s var(--ease),transform 1.1s var(--ease);
+}
+/* 玻璃上的斜光 */
+.gate::after{
+  content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(146deg,rgba(255,255,255,.09),rgba(255,255,255,0) 38%,rgba(255,255,255,0) 66%,rgba(236,198,220,.05));
+  opacity:.9;transition:opacity 1.3s var(--ease);
+}
+/* 边缘柔光：悬停时慢慢扩散出去 */
+.gate::before{
+  content:"";position:absolute;left:50%;top:50%;z-index:-1;
+  width:186%;height:186%;
+  transform:translate(-50%,-50%) scale(.66);
+  background:radial-gradient(circle at 50% 50%,rgba(255,199,222,.22),rgba(255,190,216,.075) 40%,rgba(255,190,216,0) 68%);
+  filter:blur(5px);opacity:.46;
+  transition:opacity 1.5s var(--ease),transform 1.7s var(--ease);
+  pointer-events:none;
+}
+.gate:hover,.gate:focus-visible{
+  transform:translateY(-6px);
+  border-color:rgba(255,232,242,.23);
+  background:linear-gradient(163deg,rgba(255,255,255,.112),rgba(255,255,255,.040) 46%,rgba(255,255,255,.086));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.21),
+    inset 0 -26px 40px -24px rgba(255,206,226,.28),
+    0 34px 92px -40px rgba(255,168,204,.32),
+    0 0 70px -18px rgba(255,182,212,.30);
+  outline:none;
+}
+.gate:hover::before,.gate:focus-visible::before{opacity:.95;transform:translate(-50%,-50%) scale(1.06)}
+.gate:hover::after,.gate:focus-visible::after{opacity:1}
+.gate:hover .ink .body,.gate:focus-visible .ink .body{filter:drop-shadow(0 0 15px rgba(255,196,220,.42)) brightness(1.06)}
+.gate:hover .ink .bloom,.gate:focus-visible .ink .bloom{opacity:.66}
+
+.gate .ink{--w:clamp(74px,8.4vw,104px);z-index:1;transition:transform 1.2s var(--ease)}
+.gate:hover .ink{transform:translateY(-1px)}
+.ink--star{--ink:url("assets/ink/gate-star.png");--ar:176/167}
+.ink--sea{--ink:url("assets/ink/gate-sea.png");--ar:233/211}
+
+.cap{
+  position:relative;z-index:1;
+  margin-top:clamp(14px,2.2vh,20px);
+  font-size:clamp(9px,.82vw,10px);font-weight:300;
+  letter-spacing:.3em;text-indent:.3em;
+  color:rgba(247,238,243,.36);
+  transition:color 1.2s var(--ease);
+  white-space:nowrap;
+}
+.gate:hover .cap,.gate:focus-visible .cap{color:rgba(247,238,243,.64)}
+
+/* ============ 页脚 ============ */
+.foot{
+  position:absolute;left:0;right:0;bottom:clamp(20px,3.6vh,40px);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  font-size:clamp(10.5px,1vw,12px);font-weight:300;letter-spacing:.14em;
+  color:rgba(247,238,243,.54);
+  opacity:0;animation:fadeUp 2.2s 1.75s var(--ease) forwards;
+}
+.foot__row{display:flex;align-items:baseline;gap:clamp(10px,1.2vw,16px)}
+.foot__k{font-size:.9em;letter-spacing:.34em;text-indent:.34em;color:rgba(247,238,243,.36)}
+.foot a{
+  color:rgba(247,238,243,.84);text-decoration:none;
+  border-bottom:1px solid rgba(247,238,243,.16);padding-bottom:2px;
+  transition:color .9s var(--ease),border-color .9s var(--ease),text-shadow .9s var(--ease);
+}
+.foot a:hover{color:#fff;border-color:rgba(255,214,232,.62);text-shadow:0 0 18px rgba(255,190,220,.45)}
+
+.sr{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+
+@keyframes fadeIn{to{opacity:1}}
+@keyframes grainIn{to{opacity:.17}}
+@keyframes grainMove{
+  0%{background-position:0 0}14%{background-position:-12px 8px}28%{background-position:9px -11px}
+  42%{background-position:-7px -6px}56%{background-position:13px 5px}70%{background-position:-4px 12px}
+  84%{background-position:6px -3px}100%{background-position:0 0}
+}
+@keyframes riseIn{
+  from{opacity:0;transform:translateY(16px);filter:blur(9px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes breathe{
+  from{opacity:.62;transform:translate(-50%,0) scale(.96)}
+  to{opacity:1;transform:translate(-50%,0) scale(1.04)}
+}
+
+/* ============ 窄屏 ============ */
+@media (max-width:760px){
+  .stage{padding:clamp(34px,6.4vh,58px) 18px clamp(112px,19vh,154px)}
+  .title{width:min(560px,94vw)}
+  .kicker{letter-spacing:.42em;text-indent:.42em;margin-bottom:clamp(16px,3vh,26px)}
+  .sub{font-size:11.5px;letter-spacing:.1em;text-indent:.1em;line-height:2.1;
+       margin-top:clamp(14px,2.6vh,22px)}
+  .gates{margin-top:clamp(26px,5vh,44px);gap:12px}
+  .gate{width:min(43vw,172px);height:clamp(138px,19.5vh,166px);border-radius:20px}
+  .gate .ink{--w:clamp(54px,15vw,74px)}
+  .cap{font-size:9px;letter-spacing:.18em;text-indent:.18em;color:rgba(247,238,243,.42)}
+  .foot{font-size:10px;gap:7px}
+  .foot__row{gap:9px}
+}
+@media (max-height:620px){
+  .kicker{display:none}
+  .stage{padding:22px 18px 78px}
+  .gates{margin-top:20px}
+  .gate{height:126px}
+  .cap{display:none}
+  .sub{font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important}
+  #bg,.grain,.head,.gates,.foot{opacity:1;transform:none;filter:none}
+  .grain{opacity:.17}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="veil" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<main class="stage">
+
+  <header class="head">
+    <p class="kicker">诗 集 · 凌 润 林</p>
+
+    <h1 class="title">
+      <span class="sr">诗季——我们的星辰与大海</span>
+      <span class="ink ink--title" aria-hidden="true">
+        <i class="bloom"></i><i class="body"></i><i class="light"></i>
+      </span>
+    </h1>
+
+    <p class="sub">在诗的季节里，这里，是我们的星辰与大海</p>
+  </header>
+
+  <nav class="gates" aria-label="两个去处">
+    <a class="gate" href="./stars/index.html" aria-label="星辰：草原星空，四十三首">
+      <span class="ink ink--star" aria-hidden="true">
+        <i class="bloom"></i><i class="body"></i><i class="light"></i>
+      </span>
+      <span class="cap">草原 · 星空 · 四十三首</span>
+    </a>
+
+    <a class="gate" href="./sea/index.html" aria-label="大海：沙滩漂流瓶">
+      <span class="ink ink--sea" aria-hidden="true">
+        <i class="bloom"></i><i class="body"></i><i class="light"></i>
+      </span>
+      <span class="cap">沙滩 · 漂流瓶 · 潮汐</span>
+    </a>
+  </nav>
+
+  <footer class="foot">
+    <p class="foot__row"><span class="foot__k">投稿</span><a href="mailto:an1327_2021@qq.com">an1327_2021@qq.com</a></p>
+    <p class="foot__row"><span class="foot__k">主页</span><a href="https://runlin1113.github.io/" target="_blank" rel="noopener">runlin1113.github.io</a></p>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var gates = document.querySelector('.gates');
+  var cvs = document.getElementById('bg');
+  var ctx = cvs.getContext('2d');
+  var W = 0, H = 0, DPR = 1, hz = 0, MOBILE = true;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canFilter = typeof ctx.filter === 'string';
+
+  var stars = [], waves = [], blades = [], glints = [], motes = [];
+
+  function rng(seed) {
+    return function () {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+      return seed / 0x7fffffff;
+    };
+  }
+
+  function build() {
+    var r = rng(20261107);
+    var i, d;
+
+    stars.length = 0;
+    var sn = MOBILE ? 130 : 250;
+    for (i = 0; i < sn; i++) {
+      stars.push({
+        x: r() * W,
+        y: Math.pow(r(), 1.5) * hz * 0.98,
+        rad: 0.3 + Math.pow(r(), 3.2) * 1.35,
+        a: 0.12 + r() * 0.64,
+        ph: r() * 6.2832,
+        sp: 0.12 + r() * 0.5,
+        warm: r() < 0.3
+      });
+    }
+
+    waves.length = 0;
+    for (i = 0; i < 11; i++) {
+      waves.push({ t: i / 11, ph: r() * 6.2832, sp: 0.06 + r() * 0.14, amp: 0.6 + r() * 2.0 });
+    }
+
+    /* 地平线上的草：一片贴着远岸的剪影，不往前景爬 */
+    blades.length = 0;
+    var fh = H - hz;
+    for (i = 0; i < (MOBILE ? 150 : 470); i++) {
+      blades.push({
+        x: r() * W * 1.02 - W * 0.01,
+        by: hz + 3 + r() * fh * 0.014,
+        h: fh * (0.014 + Math.pow(r(), 1.6) * 0.075),
+        lean: (r() - 0.5) * 1.0,
+        curve: (r() - 0.5) * 0.55,
+        w: 0.9 + r() * 1.7,
+        ph: r() * 6.2832,
+        sp: 0.32 + r() * 0.7,
+        o: 0.5 + r() * 0.45
+      });
+    }
+    blades.sort(function (a, b) { return a.h - b.h; });
+
+    /* 水面上碎掉的星 */
+    glints.length = 0;
+    var gn = MOBILE ? 90 : 190;
+    for (i = 0; i < gn; i++) {
+      glints.push({
+        u: (r() - 0.5) * 1.1,
+        v: Math.pow(r(), 0.7),
+        len: 3 + Math.pow(r(), 1.8) * 26,
+        a: 0.04 + Math.pow(r(), 1.5) * 0.17,
+        ph: r() * 6.2832,
+        sp: 0.3 + r() * 1.1
+      });
+    }
+
+    motes.length = 0;
+    var mn = MOBILE ? 14 : 26;
+    for (i = 0; i < mn; i++) {
+      motes.push({
+        x: r() * W, y: r() * H,
+        rad: 0.5 + r() * 1.2,
+        vy: -(0.05 + r() * 0.16),
+        vx: (r() - 0.5) * 0.11,
+        a: 0.05 + r() * 0.2,
+        ph: r() * 6.2832
+      });
+    }
+  }
+
+  function resize() {
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    MOBILE = W < 760;
+    cvs.width = Math.round(W * DPR);
+    cvs.height = Math.round(H * DPR);
+    cvs.style.width = W + 'px';
+    cvs.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+    hz = measureHz();
+    build();
+  }
+
+  /* 地平线跟着两个入口走：永远落在它们脚下一段距离。
+     标题和门怎么长，岸就怎么退，不会压到卡片上 */
+  function measureHz() {
+    /* 用 rect 而不是 offsetTop：offsetTop 是从 padding 边算的，会少掉一截 */
+    var gb = gates ? gates.getBoundingClientRect().bottom : H * 0.66;
+    var gap = Math.max(56, Math.min(132, H * 0.105));
+    return Math.min(H * 0.90, Math.max(H * 0.58, gb + gap));
+  }
+
+  /* 字体和图片到齐后版式会挪一点，岸得重新落一次 */
+  function relayout() {
+    var v = measureHz();
+    if (Math.abs(v - hz) > 1) {
+      hz = v;
+      build();
+      if (reduce) drawStatic();
+    }
+  }
+
+  function blob(x, y, rad, rgb, a) {
+    var g = ctx.createRadialGradient(x, y, 0, x, y, rad);
+    g.addColorStop(0, 'rgba(' + rgb + ',' + a + ')');
+    g.addColorStop(0.48, 'rgba(' + rgb + ',' + (a * 0.42) + ')');
+    g.addColorStop(1, 'rgba(' + rgb + ',0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(x, y, rad, 0, 6.2832);
+    ctx.fill();
+  }
+
+  var SKY_TOP = [5, 5, 11], SKY_MID = [11, 10, 22], SKY_LOW = [26, 20, 34];
+
+  function sky(t) {
+    var g = ctx.createLinearGradient(0, 0, 0, hz);
+    g.addColorStop(0, '#05050B');
+    g.addColorStop(0.30, '#080812');
+    g.addColorStop(0.60, '#0C0B17');
+    g.addColorStop(0.83, '#120F1E');
+    g.addColorStop(1, '#1A1522');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, hz + 1);
+
+    /* 几团没有边界的雾光 —— 天自己亮了一点，不是画上去的圆 */
+    blob(W * 0.20, hz * 0.32, Math.max(W, H) * 0.48, '124,112,168', 0.075);
+    blob(W * 0.84, hz * 0.50, Math.max(W, H) * 0.42, '186,128,158', 0.058);
+    blob(W * 0.5, hz * 1.02, Math.max(W, H) * 0.66, '206,158,178', 0.065);
+
+    /* 银河：斜着铺过去的一层极淡的亮，会极慢地移 */
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.translate(W * 0.54, hz * 0.42);
+    ctx.rotate(-0.5 + Math.sin(t * 0.02) * 0.004);
+    var bw = Math.max(W, H) * 1.6, bh = Math.max(W, H) * 0.30;
+    var bg = ctx.createLinearGradient(0, -bh, 0, bh);
+    bg.addColorStop(0, 'rgba(140,140,190,0)');
+    bg.addColorStop(0.4, 'rgba(146,142,196,.020)');
+    bg.addColorStop(0.5, 'rgba(186,172,206,.042)');
+    bg.addColorStop(0.6, 'rgba(146,142,196,.020)');
+    bg.addColorStop(1, 'rgba(140,140,190,0)');
+    ctx.fillStyle = bg;
+    ctx.fillRect(-bw / 2, -bh, bw, bh * 2);
+    ctx.restore();
+  }
+
+  function drawStars(t) {
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      var tw = 0.55 + 0.45 * Math.sin(t * s.sp + s.ph);
+      var a = s.a * tw;
+      if (a <= 0.008) continue;
+      ctx.globalAlpha = Math.min(0.92, a);
+      ctx.fillStyle = s.warm ? '#FFE4D2' : '#E6EBFF';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.rad, 0, 6.2832);
+      ctx.fill();
+      if (s.rad > 1.15) {
+        ctx.globalAlpha = Math.min(0.15, a * 0.18);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.rad * 5.4, 0, 6.2832);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* 地平线：一条起伏不定的远岸，岸边站着草 */
+  function horizon() {
+    /* 贴着地平线的一层微光，是海也是草原尽头的光 */
+    var g = ctx.createLinearGradient(0, hz - H * 0.055, 0, hz + H * 0.04);
+    g.addColorStop(0, 'rgba(226,186,206,0)');
+    g.addColorStop(0.55, 'rgba(230,190,210,.028)');
+    g.addColorStop(0.84, 'rgba(255,216,230,.078)');
+    g.addColorStop(1, 'rgba(255,222,234,.012)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, hz - H * 0.055, W, H * 0.095);
+
+    /* 远岸的轮廓：只露一线，糊一点，像被雾吃掉一半 */
+    ctx.save();
+    if (canFilter) ctx.filter = 'blur(2.5px)';
+    ctx.beginPath();
+    ctx.moveTo(-30, hz + 24);
+    for (var x = -30; x <= W + 30; x += 6) {
+      var y = hz + 2
+        - Math.abs(Math.sin(x * 0.0041 + 0.8)) * 6.5
+        - Math.sin(x * 0.0113 + 2.2) * 3.4
+        - Math.sin(x * 0.0271 + 4.1) * 1.7
+        - Math.sin(x * 0.0613 + 1.7) * 0.9;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(W + 30, hz + 24);
+    ctx.closePath();
+    var rf = ctx.createLinearGradient(0, hz - 12, 0, hz + 24);
+    rf.addColorStop(0, 'rgba(8,7,13,.94)');
+    rf.addColorStop(0.42, 'rgba(8,7,13,.62)');
+    rf.addColorStop(1, 'rgba(8,7,13,0)');
+    ctx.fillStyle = rf;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  /* 岸上的草：一根一根，底宽尖细，风一来一起偏一点 */
+  function drawBlades(t) {
+    for (var i = 0; i < blades.length; i++) {
+      var b = blades[i];
+      var sway = Math.sin(t * b.sp + b.ph) * b.h * 0.3
+               + Math.sin(t * b.sp * 0.4 + b.ph * 1.9) * b.h * 0.1;
+      var tipx = b.x + b.lean * b.h * 0.5 + sway;
+      var tipy = b.by - b.h;
+      var mx = b.x + b.lean * b.h * 0.16 + b.curve * b.h * 0.4 + sway * 0.34;
+      var my = b.by - b.h * 0.55;
+      ctx.beginPath();
+      ctx.moveTo(b.x - b.w * 0.5, b.by);
+      ctx.quadraticCurveTo(mx - b.w * 0.34, my, tipx, tipy);
+      ctx.quadraticCurveTo(mx + b.w * 0.38, my, b.x + b.w * 0.5, b.by);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(6,6,11,' + b.o.toFixed(2) + ')';
+      ctx.fill();
+    }
+  }
+
+  /* 海：暗下去的一片水，只有光在动 */
+  function water(t) {
+    var d = H - hz;
+    var g = ctx.createLinearGradient(0, hz, 0, H);
+    g.addColorStop(0, '#141020');
+    g.addColorStop(0.14, '#0C0A15');
+    g.addColorStop(0.44, '#07060E');
+    g.addColorStop(0.78, '#05050B');
+    g.addColorStop(1, '#040408');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, hz - 1, W, d + 1);
+
+    /* 岸上的光落进水里，就在地平线底下化开 */
+    var ug = ctx.createLinearGradient(0, hz, 0, hz + d * 0.26);
+    ug.addColorStop(0, 'rgba(255,214,230,.055)');
+    ug.addColorStop(0.45, 'rgba(240,200,220,.018)');
+    ug.addColorStop(1, 'rgba(240,200,220,0)');
+    ctx.fillStyle = ug;
+    ctx.fillRect(0, hz, W, d * 0.26);
+
+    /* 星光在水面上铺成一条路 */
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, hz, W, d);
+    ctx.clip();
+    ctx.translate(W * 0.5, hz + d * 0.01);
+    ctx.scale(0.68, 1);
+    var rr = d * 1.55;
+    var lane = ctx.createRadialGradient(0, 0, 0, 0, 0, rr);
+    lane.addColorStop(0, 'rgba(236,200,220,.075)');
+    lane.addColorStop(0.30, 'rgba(214,186,214,.032)');
+    lane.addColorStop(0.62, 'rgba(198,180,210,.012)');
+    lane.addColorStop(1, 'rgba(198,180,210,0)');
+    ctx.fillStyle = lane;
+    ctx.beginPath();
+    ctx.arc(0, 0, rr, 0, 6.2832);
+    ctx.fill();
+    ctx.restore();
+
+    /* 涌：几条极淡的长线，给水面一点起伏 */
+    for (var i = 0; i < waves.length; i++) {
+      var w = waves[i];
+      var y0 = hz + d * (0.03 + Math.pow(w.t, 1.35) * 0.80);
+      var amp = w.amp * (0.4 + w.t * 2.4);
+      var fade = Math.max(0.12, 1 - Math.abs(w.t - 0.38) * 1.5);
+      ctx.beginPath();
+      for (var x = -30; x <= W + 30; x += 20) {
+        var yy = y0
+          + Math.sin(x * 0.0066 + t * w.sp + w.ph) * amp
+          + Math.sin(x * 0.0192 - t * 0.16 + w.ph * 1.7) * amp * 0.34;
+        if (x === -30) ctx.moveTo(x, yy); else ctx.lineTo(x, yy);
+      }
+      ctx.strokeStyle = 'rgba(224,190,212,' + ((0.026 + w.t * 0.034) * fade).toFixed(3) + ')';
+      ctx.lineWidth = 0.7 + w.t * 1.6;
+      ctx.stroke();
+    }
+
+    /* 碎光：横着的短划，横着才像水 */
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (var k = 0; k < glints.length; k++) {
+      var q = glints[k];
+      var gx = W * 0.5 + q.u * W * 0.5;
+      var gy = hz + 6 + Math.pow(q.v, 1.3) * d * 0.92;
+      var near = 1 - Math.abs(q.u) * 0.55;
+      var flick = 0.3 + 0.7 * Math.abs(Math.sin(t * q.sp + q.ph));
+      var len = q.len * (0.4 + q.v * 1.2);
+      ctx.globalAlpha = Math.min(0.5, q.a * flick * near);
+      ctx.fillStyle = 'rgba(246,224,236,1)';
+      ctx.fillRect(gx - len / 2, gy, len, 1);
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+
+  function drawMotes(t) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    for (var i = 0; i < motes.length; i++) {
+      var m = motes[i];
+      m.y += m.vy;
+      m.x += m.vx + Math.sin(t * 0.22 + m.ph) * 0.12;
+      if (m.y < -12) { m.y = H + 12; m.x = Math.random() * W; }
+      if (m.x < -12) m.x = W + 12;
+      if (m.x > W + 12) m.x = -12;
+      ctx.globalAlpha = m.a * (0.5 + 0.5 * Math.sin(t * 0.5 + m.ph));
+      ctx.fillStyle = '#FFD9E6';
+      ctx.beginPath();
+      ctx.arc(m.x, m.y, m.rad, 0, 6.2832);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+
+  var t0 = 0, frameI = 0;
+  function frame(now) {
+    if (!t0) t0 = now;
+    var t = (now - t0) / 1000;
+    frameI++;
+
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    sky(t);
+    drawStars(t);
+    water(t);
+    horizon();
+    drawBlades(t);
+    drawMotes(t);
+
+    /* 头几秒里版式可能还在挪（字体、图片陆续到位），岸跟着再量几次 */
+    if (t < 4 && frameI % 10 === 0) relayout();
+
+    requestAnimationFrame(frame);
+  }
+
+  function drawStatic() {
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    sky(0); drawStars(0); water(0); horizon(); drawBlades(0.8); drawMotes(0);
+  }
+
+  var rzT = 0;
+  window.addEventListener('resize', function () {
+    clearTimeout(rzT);
+    rzT = setTimeout(function () {
+      resize();
+      t0 = 0; frameI = 0;
+      if (reduce) drawStatic();
+    }, 140);
+  });
+
+  resize();
+  if (reduce) {
+    drawStatic();
+  } else {
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('load', relayout);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(relayout);
+  }
+  setTimeout(relayout, 300);
+})();
+</script>
+</body>
+</html>
