@@ -179,6 +179,9 @@ body{
 .gate:hover .ink{transform:translateY(-1px)}
 .ink--star{--ink:url("assets/ink/gate-star.png");--ar:176/167}
 .ink--sea{--ink:url("assets/ink/gate-sea.png");--ar:233/211}
+/* 花海是横着写的，同样的字宽会更矮，所以给得宽一点，三张卡才等重 */
+.ink--flower{--ink:url("assets/ink/gate-flower.png");--ar:359/248}
+.gate .ink--flower{--w:clamp(94px,10.4vw,128px)}
 
 .cap{
   position:relative;z-index:1;
@@ -240,10 +243,11 @@ body{
   .kicker{letter-spacing:.42em;text-indent:.42em;margin-bottom:clamp(16px,3vh,26px)}
   .sub{font-size:11.5px;letter-spacing:.1em;text-indent:.1em;line-height:2.1;
        margin-top:clamp(14px,2.6vh,22px)}
-  .gates{margin-top:clamp(26px,5vh,44px);gap:12px}
-  .gate{width:min(43vw,172px);height:clamp(138px,19.5vh,166px);border-radius:20px}
-  .gate .ink{--w:clamp(54px,15vw,74px)}
-  .cap{font-size:9px;letter-spacing:.18em;text-indent:.18em;color:rgba(247,238,243,.42)}
+  .gates{margin-top:clamp(26px,5vh,44px);gap:9px}
+  .gate{width:min(28vw,120px);height:clamp(118px,16.5vh,144px);border-radius:16px}
+  .gate .ink{--w:clamp(46px,13.5vw,62px)}
+  .gate .ink--flower{--w:clamp(60px,17.5vw,82px)}
+  .cap{font-size:8.5px;letter-spacing:.02em;text-indent:.02em;color:rgba(247,238,243,.42)}
   .foot{font-size:10px;gap:7px}
   .foot__row{gap:9px}
 }
@@ -283,7 +287,7 @@ body{
     <p class="sub">在诗的季节里，这里，是我们的星辰与大海</p>
   </header>
 
-  <nav class="gates" aria-label="两个去处">
+  <nav class="gates" aria-label="三个去处">
     <a class="gate" href="./stars/index.html" aria-label="星辰：草原星空，四十三首">
       <span class="ink ink--star" aria-hidden="true">
         <i class="bloom"></i><i class="body"></i><i class="light"></i>
@@ -296,6 +300,13 @@ body{
         <i class="bloom"></i><i class="body"></i><i class="light"></i>
       </span>
       <span class="cap">沙滩 · 漂流瓶 · 潮汐</span>
+    </a>
+
+    <a class="gate" href="./flower/index.html" aria-label="花海：春日山谷，每一朵花一首诗">
+      <span class="ink ink--flower" aria-hidden="true">
+        <i class="bloom"></i><i class="body"></i><i class="light"></i>
+      </span>
+      <span class="cap">山谷 · 春日 · 花海</span>
     </a>
   </nav>
 
